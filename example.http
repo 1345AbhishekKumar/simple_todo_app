@@ -1,0 +1,28 @@
+#GET
+GET http://localhost:3000/api/data
+
+###
+POST http://localhost:3000/api/data
+Content-Type: application/json
+
+{
+    "title": "My new blog post"
+}
+
+###
+PUT http://localhost:3000/api/data
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "Updated First Post"
+}
+
+###
+DELETE http://localhost:3000/api/data
+Content-Type: application/json
+
+{
+  "id": 1
+}
+

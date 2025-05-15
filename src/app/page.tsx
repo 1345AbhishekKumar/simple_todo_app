@@ -1,103 +1,76 @@
+
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import './globals.css';
+import Link from "next/link";
+import Footer from '@/components/layout/Footer';
+import PricingSection from "@/components/layout/Pricing";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    return (
+        <div className="bg-white text-black font-sans min-h-screen flex flex-col overflow-hidden">
+            <section className="relative flex flex-col items-center justify-center py-24 px-4 md:px-0 text-center overflow-hidden">
+                <h1 className="text-3xl md:text-5xl font-bold mb-4">The Simplified Art of Productive Living</h1>
+                <p className="text-gray-500 text-lg md:text-xl mb-8 max-w-xl mx-auto">Make each count with effortless organization, ensuring productivity and purpose every day.</p>
+                <div className="flex gap-4 justify-center mb-12">
+                    {/* Use Next.js Link for navigation instead of <a> */}
+                    <Link href="#" aria-label="Download on App Store" className="bg-black text-white rounded-full px-6 py-3 font-semibold shadow hover:bg-gray-900 transition-colors">App Store</Link>
+                    <Link href="/sign-up" aria-label="Get on Play Store" className="bg-black text-white rounded-full px-6 py-3 font-semibold shadow hover:bg-gray-900 transition-colors">Get Started</Link>
+                </div>
+                {/* Floating screenshots */}
+                {/* <div className="relative flex justify-center items-center h-72 md:h-96">
+                    <div className="absolute left-1/2 -translate-x-[70%] rotate-[-8deg] shadow-xl rounded-3xl z-10 animate-float">
+                        <Image src="https://i.pinimg.com/736x/5e/97/aa/5e97aa3af68b934d0fdb14c1c894bbbf.jpg" alt="Lumina mobile screenshot 1" width={220} height={440} />
+                    </div>
+                    <div className="absolute left-1/2 -translate-x-[30%] rotate-[7deg] shadow-xl rounded-3xl z-20 animate-float-delay">
+                        <Image src="https://i.pinimg.com/736x/5e/97/aa/5e97aa3af68b934d0fdb14c1c894bbbf.jpg" alt="Lumina mobile screenshot 2" width={220} height={440} />
+                    </div>
+                </div> */}
+                 <Image src="https://i.pinimg.com/736x/5e/97/aa/5e97aa3af68b934d0fdb14c1c894bbbf.jpg" alt="Lumina mobile screenshot 1" width={720} height={440} />
+            </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            {/* Feature Highlights 1 */}
+            <section id="features" className="flex flex-col md:flex-row items-center justify-center gap-16 py-20 px-4 md:px-0 max-w-6xl mx-auto">
+                <div className="flex-1 flex justify-center">
+                    <Image src="https://i.pinimg.com/736x/5e/97/aa/5e97aa3af68b934d0fdb14c1c894bbbf.jpg" alt="Lumina app screenshot" width={260} height={520} className="rounded-3xl shadow-lg" />
+                </div>
+                <div className="flex-1 max-w-md">
+                    <h2 className="text-2xl md:text-3xl font-semibold mb-4">Simplify Your Workflow, Anytime, Anywhere</h2>
+                    <p className="text-gray-500 mb-6">Lumina lets you organize tasks, notes, and routines in one place. Stay productive wherever you are, with seamless sync across devices.</p>
+                    <Button className="bg-black text-white rounded-full px-6 py-3 font-semibold shadow hover:bg-gray-900 transition-colors">Learn More</Button>
+                </div>
+            </section>
+
+            {/* Feature Highlights 2 */}
+            <section className="flex flex-col md:flex-row-reverse items-center justify-center gap-16 py-20 px-4 md:px-0 max-w-6xl mx-auto">
+                <div className="flex-1 flex flex-col items-center gap-4">
+                    <Image src="https://i.pinimg.com/736x/5e/97/aa/5e97aa3af68b934d0fdb14c1c894bbbf.jpg" alt="Lumina smaller screenshot" width={180} height={360} className="rounded-2xl shadow-md" />
+                    <Image src="https://i.pinimg.com/736x/5e/97/aa/5e97aa3af68b934d0fdb14c1c894bbbf.jpg" alt="Lumina note card preview" width={260} height={120} className="rounded-xl shadow border border-gray-100 bg-white -mt-8" />
+                </div>
+                <div className="flex-1 max-w-md">
+                    <h2 className="text-2xl md:text-3xl font-semibold mb-4">Transform Your Routine for Productivity and Reflection</h2>
+                    <p className="text-gray-500 mb-6">Build habits, reflect on your progress, and unlock your best self with Lumina’s daily and weekly review tools.</p>
+                    <Button className="bg-black text-white rounded-full px-6 py-3 font-semibold shadow hover:bg-gray-900 transition-colors">Learn More</Button>
+                </div>
+            </section>
+
+            {/* Pricing Section */}
+            <PricingSection />
+
+            {/* Newsletter Sign-up */}
+            <section className="py-20 px-4 md:px-0 flex flex-col items-center bg-white">
+                <h2 className="text-2xl md:text-3xl font-semibold mb-2">Sign up to our newsletter</h2>
+                <p className="text-gray-500 mb-6">Receive latest news, updates and many other news every week.</p>
+                <form className="flex w-full max-w-md gap-2" autoComplete="off">
+                    <input type="email" aria-label="Your email address" placeholder="Your email address" className="flex-1 px-5 py-3 rounded-full border border-gray-200 shadow focus:outline-none focus:ring-2 focus:ring-black" required />
+                    <button type="submit" className="bg-black text-white rounded-full w-12 h-12 flex items-center justify-center shadow hover:bg-gray-900 transition-colors" aria-label="Subscribe">
+                        <ArrowRight className="w-6 h-6" />
+                    </button>
+                </form>
+            </section>
+
+            <Footer />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    );
 }
