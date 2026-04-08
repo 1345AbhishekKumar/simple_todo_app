@@ -1,3 +1,4 @@
+import { currentUser } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 interface POSTS {
@@ -12,8 +13,11 @@ const posts: POSTS[] = [
   { id: 3, title: 'Hello World 3', description: 'what is it?'  },
 ];
 
-// GET /api/posts - Get all posts
+// GET /api/data - Get all posts
 export async function GET() {
+  const user = await currentUser();
+  if (!user) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+
   try {
     return NextResponse.json({
       success: true,
@@ -29,8 +33,11 @@ export async function GET() {
   }
 }
 
-// POST /api/posts - Create a new post
+// POST /api/data - Create a new post
 export async function POST(req: NextRequest) {
+  const user = await currentUser();
+  if (!user) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+
   try {
     const body = await req.json();
     const { title } = body;
@@ -66,8 +73,11 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// PUT /api/posts?id=ID - Update a post
+// PUT /api/data - Update a post
 export async function PUT(req: NextRequest) {
+  const user = await currentUser();
+  if (!user) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+
   try {
     const body = await req.json();
     const { id, title } = body;
@@ -104,46 +114,46 @@ export async function PUT(req: NextRequest) {
   }
 }
 
-// DELETE /api/posts?id=ID - Delete a post
+// DELETE /api/data - Delete a post
 export async function DELETE(req: NextRequest) {
-    try {
-      // Make sure the body is read correctly. If the body is empty (which can happen for DELETE), use default value as empty object.
-      const body = req.method === 'DELETE' ? await req.json() : {};
-  
-      const { id } = body;
-  
-      // Validate the required 'id' field
-      if (!id) {
-        return NextResponse.json({
-          success: false,
-          message: 'Missing required field: id',
-          data: null,
-        }, { status: 400 });
-      }
-  
-      const post = posts.find((post) => post.id === id);
-      if (!post) {
-        return NextResponse.json({
-          success: false,
-          message: 'Post not found',
-          data: null,
-        }, { status: 404 });
-      }
-  
-      // Delete the post from the array
-      posts.splice(posts.indexOf(post), 1);
-  
-      return NextResponse.json({
-        success: true,
-        message: 'Post deleted successfully',
-        data: post,
-      }, { status: 200 });
-    } catch (error) {
+  const user = await currentUser();
+  if (!user) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+
+  try {
+    const body = await req.json();
+    const { id } = body;
+
+    // Validate the required 'id' field
+    if (!id) {
       return NextResponse.json({
         success: false,
-        message: 'Internal server error',
-        error: error instanceof Error ? error.message : 'Unknown error',
-      }, { status: 500 });
+        message: 'Missing required field: id',
+        data: null,
+      }, { status: 400 });
     }
+
+    const post = posts.find((post) => post.id === id);
+    if (!post) {
+      return NextResponse.json({
+        success: false,
+        message: 'Post not found',
+        data: null,
+      }, { status: 404 });
+    }
+
+    // Delete the post from the array
+    posts.splice(posts.indexOf(post), 1);
+
+    return NextResponse.json({
+      success: true,
+      message: 'Post deleted successfully',
+      data: post,
+    }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      message: 'Internal server error',
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 });
   }
-  
+}

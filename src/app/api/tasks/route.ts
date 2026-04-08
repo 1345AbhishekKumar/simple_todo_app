@@ -2,8 +2,9 @@ import { db } from "@/drizzle/db";
 import { tasks } from "@/drizzle/schema";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
-import { taskSchema } from "@/lib/validation"; // Import Zod schema
+import { and, eq } from "drizzle-orm";
+import { taskSchema, taskUpdateSchema } from "@/lib/validation"; // Import Zod schemas
+
 // ========== GET all tasks ==========
 export async function GET() {
   const user = await currentUser();
@@ -45,13 +46,19 @@ export async function PUT(req: NextRequest) {
   if (!user) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
   try {
-    // Validate the request body using Zod
+    // Validate the request body using Zod (includes id validation)
     const { id, title, status } = await req.json();
-    taskSchema.parse({ title, status }); // This will throw an error if validation fails
+    taskUpdateSchema.parse({ id, title, status }); // Validates id, title, and status
 
-    await db.update(tasks)
+    const result = await db.update(tasks)
       .set({ title, status })
-      .where(eq(tasks.id, id));
+      // Ownership check: only update the task if it belongs to the authenticated user
+      .where(and(eq(tasks.id, id), eq(tasks.userId, user.id)))
+      .returning();
+
+    if (result.length === 0) {
+      return NextResponse.json({ message: "Task not found or access denied" }, { status: 404 });
+    }
 
     return NextResponse.json({ message: "Task updated" });
   } catch (error) {
@@ -67,10 +74,27 @@ export async function DELETE(req: NextRequest) {
   const user = await currentUser();
   if (!user) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
-  const { id } = await req.json();
+  try {
+    const { id } = await req.json();
 
-  await db.delete(tasks)
-    .where(eq(tasks.id, id));
+    if (!Number.isInteger(id) || id <= 0) {
+      return NextResponse.json({ message: "Missing or invalid required field: id" }, { status: 400 });
+    }
 
-  return NextResponse.json({ message: "Task deleted" });
+    const result = await db.delete(tasks)
+      // Ownership check: only delete the task if it belongs to the authenticated user
+      .where(and(eq(tasks.id, id), eq(tasks.userId, user.id)))
+      .returning();
+
+    if (result.length === 0) {
+      return NextResponse.json({ message: "Task not found or access denied" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "Task deleted" });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ message: error.message }, { status: 400 });
+    }
+    return NextResponse.json({ message: "Unknown error" }, { status: 500 });
+  }
 }
