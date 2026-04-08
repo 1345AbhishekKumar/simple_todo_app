@@ -77,7 +77,7 @@ export async function DELETE(req: NextRequest) {
   try {
     const { id } = await req.json();
 
-    if (!id || typeof id !== "number" || !Number.isInteger(id) || id <= 0) {
+    if (!Number.isInteger(id) || id <= 0) {
       return NextResponse.json({ message: "Missing or invalid required field: id" }, { status: 400 });
     }
 
